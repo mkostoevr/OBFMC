@@ -5,8 +5,9 @@
 
 #ifdef ONE_SOURCE
 #   include "obfmc.c"
-//#   include "backend/c/toC.c"
-#   include "backend/kos32/toKos32.c"
+//#   include "backend/cpu/c/toC.c"
+#   include "backend/cpu/x86/toX86.c"
+#   include "backend/sys/kos32/toKos32.c"
 #endif
 
 int main(int argc, char **argv) {
