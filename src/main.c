@@ -38,7 +38,7 @@ static int buildTargets(struct Target *firstTarget, Bf *bf, const char *name) {
 }
 
 int usage() {
-    puts("Usage: bfc sourceName [-o outputName] [--kos32] [--c]");
+    puts("Usage: bfc sourceName [-o outputName] [--kos32] [--dos16] [--c]\nOne taget is requred.");
     return -1;
 }
 
@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
     const char *inputName = NULL;
     const char *outputName = "a";
 
-    if (argc < 2) { return usage(); }
+    if (argc < 2) { puts("Input file isn't specified."); return usage(); }
     inputName = argv[1];
     for (int i = 0; i < argc; i++) {
         if (!memcmp(argv[i], "-o", 2)) {
@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
             }
         }
     }
-    if (!firstTarget) { return usage(); }
+    if (!firstTarget) { puts("Target isn't specified."); return usage(); }
     {
         FILE *fp = fopen(inputName, "r");
         
