@@ -1,0 +1,7 @@
+Optimizations:
+Reduce mutually cancelling instructions. E.g. "+++-->><" is equivalent to "+>" and is compiled accordingly.
+Identify and replace with single instructions some common constructs. E.g. "[-]" = SET(0).
+Remove loops known to never be entered. This is the case for loops opened at the very beginning of a program (when all cells are 0) and loops opened immediately after the closing of another loop.
+Replace copy and multiplication loops with constant time operations. E.g. "[->>+++<+<]" = two RMUL(2, 3), RMUL(1,1)), SET(0).
+Constant propogation (whole program may be evaluated in compile time if it has no input).
+Fix undefined behaviour of almost all builders (see: "//! FIXME: UB").

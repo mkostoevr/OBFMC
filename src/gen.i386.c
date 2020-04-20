@@ -7,7 +7,7 @@
 // EAX = ptr in brainfuck memory
 // EBX = bf_putchar
 // ECX = bf_getchar
-void toX86(Bf *bf, size_t *_outSize, void **_out) {
+int genI386(Bf *restrict bf, size_t *restrict _outSize, void *restrict *restrict _out) {
     size_t outCap = 100;
     size_t outSize = 0;
     char *out = malloc(outCap);
@@ -16,14 +16,14 @@ void toX86(Bf *bf, size_t *_outSize, void **_out) {
         struct Loop *prev;
         struct Loop *next;
     } *loop = calloc(sizeof(struct Loop), 1), *prev = NULL;
-    
+
+    if (!loop) { return ERROR_OUT_OF_MEMORY; }
     *_out = NULL;
     *_outSize = 0;
     for (size_t i = 0; i < bf->irSize; i += 2) {
         if (outSize + 100 >= outCap) {
             outCap += outCap >> 1;
-            out = realloc(out, outCap);
-            printf("New size: %d\n", outCap);
+            if (!(out = realloc(out, outCap))) { return ERROR_OUT_OF_MEMORY; }
         }
         switch (bf->ir[i]) {
         case '>':
@@ -114,11 +114,12 @@ void toX86(Bf *bf, size_t *_outSize, void **_out) {
             break;
         default:
             puts("Error: Illegal instruction");
-            return;
+            return ERROR_ILLEGAL_INSTRUCTION;
         }
     }
     out[outSize++] = 0xc3; // RET
     free(loop);
     *_out = out;
     *_outSize = outSize;
+    return 0;
 }

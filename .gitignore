@@ -1,4 +1,6 @@
 *.o
 *.kex
 *.exe
-/a.c
+*.com
+/*.c
+/.vscode

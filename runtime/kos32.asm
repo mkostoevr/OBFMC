@@ -6,11 +6,11 @@ use32
         db      'MENUET01'
         dd      1
         dd      start
-        dd      0 ; configure in compiler
-        dd      0 ; configure in compiler
-        dd      0 ; configure in compiler
-        dd      0
-        dd      0
+        dd      0 ; size of executable, configure in compiler
+        dd      0 ; memory need, configure in compiler
+        dd      0 ; esp, configure in compiler
+        dd      0 ; arguments, not used
+        dd      0 ; app name, not used
 
 start:
         stdcall load_dll_and_import, dllname, imports
@@ -22,9 +22,6 @@ start:
         push    -1
         push    -1
         call    [con_init]
-        push    start_string
-        call    [con_printf]
-        pop     ecx
         ;int3
         ; initialize 30000 byte array
         mov	ecx, 30000
@@ -42,29 +39,29 @@ exit:
         or      eax, -1
         int     0x40
 
-fmt db '%c', 0
-
 bf_putchar:
         push eax
 	push ebx
-        mov  ebx, dword[eax]
-        and  ebx, 0xff
-        push ebx
+	push ecx
+        push dword[eax]
         push fmt
         call [con_printf]
         add  esp, 8
-	pop  ebx ; pointer to putchar
-        pop  eax ; pointer to buffer
+	pop  ecx
+        pop  ebx
+        pop  eax
         ret
 
 bf_getchar:
+        push ecx
         push ebx
         push eax
         call [con_getch]
         mov ebx, eax
-        pop eax ; pointer to buffer
+        pop eax
         mov byte[eax], bl
-	pop ebx ; pointer to bf_putchar
+	pop ebx
+        pop ecx
         ret
 
 proc load_dll_and_import stdcall, _dllname:dword, _imports:dword
@@ -125,24 +122,19 @@ endp
 align 4
 
 imports:
-dll_start          dd szStart
-dll_ver            dd szVersion
 con_init           dd szcon_init
 con_printf         dd szcon_printf
 con_exit           dd szcon_exit
 con_getch          dd szcon_getch
                    dd 0
 
-szStart            db 'START',0
-szVersion          db 'version',0
 szcon_init         db 'con_init',0
 szcon_printf       db 'con_printf',0
 szcon_exit         db 'con_exit',0
 szcon_getch        db 'con_getch',0
 
-dllname  db '/sys/lib/console.obj',0
-
+dllname            db '/sys/lib/console.obj',0
+fmt                db '%c', 0
 caption            db 'Brainfuck app',0
-start_string       db 'Hi here!',10,0
 
 brainfuck:
