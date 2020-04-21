@@ -76,6 +76,29 @@ static void simplificate(size_t irSize, char *ir) {
     }
 }
 
+// translates [-] to =0
+static void optimizeZerofications(size_t irSize, char *ir) {
+    struct {
+        char c;
+        size_t i;
+    } prev[2];
+
+    for (size_t i = 0; i < irSize; i += 2) {
+        char c = ir[i];
+
+        if (prev[1].c == '[' && prev[0].c == '-' && c == ']') {
+            ir[i] = '\0';
+            ir[prev[0].i] = '\0';
+            // *ptr = 0
+            ir[prev[1].i] = '=';
+            ir[prev[1].i + 1] = 0;
+        }
+        prev[1] = prev[0];
+        prev[0].c = ir[i];
+        prev[0].i = i;
+    }
+}
+
 int bfInit(Bf *restrict bf, size_t sourceSize, char *restrict source) {
     size_t irSize = sourceSize * 2;
     char *ir = malloc(irSize);
@@ -90,6 +113,9 @@ int bfInit(Bf *restrict bf, size_t sourceSize, char *restrict source) {
     //dump(irSize, ir);
     simplificate(irSize, ir);
     //puts("After simplification:");
+    //dump(irSize, ir);
+    optimizeZerofications(irSize, ir);
+    //puts("After zerofications optimization:");
     //dump(irSize, ir);
     bf->irSize = irSize;
     bf->ir = ir;

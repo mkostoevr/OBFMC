@@ -52,6 +52,12 @@ int gen8086(Bf *restrict bf, size_t *restrict _outSize, void *restrict *restrict
             out[outSize++] = 0x2c;
             out[outSize++] = bf->ir[i + 1];
             break;
+        case '=':
+            // MOV [SI], bf->ir[i + 1]
+            out[outSize++] = 0xc6;
+            out[outSize++] = 0x04;
+            out[outSize++] = bf->ir[i + 1];
+            break;
         case '.':
             // CALL BX
             out[outSize++] = 0xff;

@@ -54,6 +54,12 @@ int genI386(Bf *restrict bf, size_t *restrict _outSize, void *restrict *restrict
             out[outSize++] = 0x28;
             out[outSize++] = bf->ir[i + 1];
             break;
+        case '=':
+            // MOV [EAX], ir[i + 1]
+            out[outSize++] = 0xc6;
+            out[outSize++] = 0x00;
+            out[outSize++] = bf->ir[i + 1] & 0xff;
+            break;
         case '.':
             // CALL EBX
             out[outSize++] = 0xff;
