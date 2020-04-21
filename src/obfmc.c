@@ -58,20 +58,23 @@ static void removeGarbage(size_t irSize, char *ir) {
 
 // translates sequences like -1-1-1-1-1-1 to -6
 static void simplificate(size_t irSize, char *ir) {
-    char   sameCount = 0;
-    char   last = 0;
+    int sameOffset = 0;
+    char last = 0;
 
     for (size_t i = 0; i < irSize; i += 2) {
         char c = ir[i];
 
+        sameOffset++;
+        if (!c) { continue; }
         if (last == c && (c == '+' || c == '-' || c == '<' || c == '>')) {
-            ir[i] = '\0';
-            ir[i + 1] = '\0';
-            sameCount++;
-        } else if (sameCount) {
-            ir[i - sameCount * 2 + 1 - 2] += sameCount;
-            sameCount = 0;
-        }
+            if ((unsigned char)ir[i - sameOffset * 2 + 1] == 255) {
+                sameOffset = 0;
+            } else {
+                ir[i] = '\0';
+                ir[i + 1] = '\0';
+                ir[i - sameOffset * 2 + 1]++;
+            }
+        } else { sameOffset = 0; }
         last = c;
     }
 }

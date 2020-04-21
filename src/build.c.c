@@ -37,6 +37,9 @@ int buildC(Bf *restrict bf, const char *restrict name) {
         case '-':
             fprintf(fp, "*ptr -= %d;\n", bf->ir[i + 1]);
             break;
+        case '=':
+            fprintf(fp, "*ptr = %d;\n", bf->ir[i + 1]);
+            break;
         case '.':
             fputs("putchar(*ptr);\n", fp);
             break;
