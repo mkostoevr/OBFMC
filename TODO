@@ -5,3 +5,4 @@ Remove loops known to never be entered. This is the case for loops opened at the
 Replace copy and multiplication loops with constant time operations. E.g. "[->>+++<+<]" = two RMUL(2, 3), RMUL(1,1)), SET(0).
 Constant propogation (whole program may be evaluated in compile time if it has no input).
 Fix undefined behaviour of almost all builders (see: "//! FIXME: UB").
+Short branch optimization (gen.8086.c, gen.i386.c).

@@ -11,6 +11,7 @@
 #   include "build.c.c"
 #   include "build.dos16.c"
 #   include "build.kos32.c"
+#   include "build.win32.c"
 #endif
 
 struct Target {
@@ -64,6 +65,8 @@ int main(int argc, char **argv) {
                 addTarget(buildKos32);
             } else if (!memcmp(argv[i] + 2, "dos16", strlen("dos16"))) {
                 addTarget(buildDos16);
+            } else if (!memcmp(argv[i] + 2, "win32", strlen("win32"))) {
+                addTarget(buildWin32);
             } else if (!memcmp(argv[i] + 2, "c", strlen("c"))) {
                 addTarget(buildC);
             }

@@ -14,6 +14,7 @@ enum {
     ERROR_OUTPUT_FILE_IS_NOT_CREATED,
     ERROR_CAN_NOT_OPEN_RUNTIME,
     ERROR_ILLEGAL_INSTRUCTION,
+    ERROR_PLACE_FOR_CODE_NOT_FOUND,
 };
 
 int bfInit(Bf *restrict bf, size_t sourceSize, char *restrict source);

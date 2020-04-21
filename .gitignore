@@ -1,6 +1,7 @@
-*.o
-*.kex
-*.exe
-*.com
-/*.c
 /.vscode/*
+/.vs/*
+/*.exe
+/test/*.exe
+/test/*.com
+/test/*.kex
+/test/*.c
