@@ -39,7 +39,7 @@ static int buildTargets(struct Target *firstTarget, Bf *bf, const char *name) {
 }
 
 int usage() {
-    puts("Usage: bfc sourceName [-o outputName] [--win32] [--kos32] [--dos16] [--c]\nOne taget is requred.");
+    puts("Usage: obfmc sourceName [-o outputName] [--win32] [--kos32] [--dos16] [--c]\nOne taget is requred.");
     return -1;
 }
 
