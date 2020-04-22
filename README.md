@@ -4,6 +4,7 @@
 
 List of performing optimiations:
 * Sequences like ++++... are translating into +n
+* \[-\] is translating into =0
 
 ## Targets
 
